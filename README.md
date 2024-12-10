@@ -8,30 +8,29 @@ Property Listings: Buyers can view properties listed by sellers.
 User Roles: Three distinct user roles - Admin, Buyer, and Seller.
 Seller Functionality: Sellers can directly list their properties without admin approval.
 Buyer Functionality: Buyers can search properties by type (House, Apartment, Commercial) and inquire about listings.
-Dynamic Banner: The homepage features a full-width banner that updates every 30 seconds.
-Interactive Maps: Google Maps integration to display property locations.
+Esay Payment: Razorpay integration to make payment for property listing.
 User Authentication: Login system with role-based redirection.
 
 ## Tech Stack
 Frontend: HTML, CSS, JavaScript
 Backend: Python (Flask)
 Database: MySQL
-APIs: Google Maps API
+APIs: Razorpay API
 
 ### Installation
-1. Clone the repository.
+### 1. Clone the repository.
 git clone https://github.com/yourusername/DreamEstate.git  
 cd DreamEstate
 
-2. Set up a Python virtual environment.
+### 2. Set up a Python virtual environment.
 python -m venv venv  
 source venv/bin/activate  # On Windows, use venv\Scripts\activate
 
-3. Install dependencies.
+### 3. Install dependencies.
 pip install -r requirements.txt  
 Set up the MySQL database and update the configuration in config.py.
 
-4. Run the Flask application.
+### 4. Run the Flask application.
 flask run
 
 ## Usage
