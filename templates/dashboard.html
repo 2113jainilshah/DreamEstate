@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        footer {
+            /*Stick the footer at bottom. */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1em;
+        }
+
+        .user-profile {
+            justify-content: center;
+            margin: 30px 0 30px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/logo4.png') }}" alt="Logo" />
+            </a>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% if role=="seller" %}
+                <li><a href="{{ url_for('myproperties') }}">My Properties</a></li>
+                <li><a href="{{ url_for('seller_enquires') }}">Inquiries</a></li>
+                {% endif %}
+                {% if role=="admin" %}
+                <li><a href="{{ url_for('admin') }}">Admin Panel</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="dashboard">
+            <div class="user-profile">
+                <a href="{{ url_for('dashboard') }}">
+                    <img src="{{ url_for('static', filename='images/profile_photo.png') }}" alt="Profile Photo"
+                        class="profile-photo">
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="profile-name-link">
+                    <span>{{ current_user.name }}</span>
+                </a>
+            </div>
+            <h1 style="text-align: center;">Welcome to Your Dashboard, {{ current_user.name }}!</h1>
+            <p style="text-align: center;">This is your dashboard where you can view and manage your account
+                information.</p>
+
+            <!-- Display User Data -->
+            <div class="user-card">
+                <div class="user-info">
+                    <span class="icon">👤</span>
+                    <span class="info">{{ current_user.name }}</span>
+                </div>
+                <div class="user-info">
+                    <span class="icon">✉️</span>
+                    <span class="info">{{ current_user.email }}</span>
+                </div>
+                <div class="user-info">
+                    <span class="icon">📞</span>
+                    <span class="info">{{ user.phone }}</span>
+                </div>
+                <div class="user-info">
+                    <span class="icon">🏠</span>
+                    <span class="info">{{ role }}</span>
+                </div>
+                <a href="{{ url_for('edit_user_form', id=current_user.id) }}" style="text-decoration: none;">
+                    <button class="edit-button">Edit</button>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Dream Estate. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

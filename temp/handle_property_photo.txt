@@ -1,0 +1,118 @@
+Step 1: Update Your Code to Handle Photo Upload
+You need to update your form and backend logic to allow users to upload a photo for the property.
+HTML Form
+Add a file input field to your form:
+
+html:
+
+<form method="POST" action="{{ url_for('add_property') }}" enctype="multipart/form-data">
+    <!-- Other form fields -->
+    <div class="input-group">
+        <label for="photo">Property Photo:</label>
+        <input type="file" id="photo" name="photo" accept="image/*">
+    </div>
+    <button type="submit">Add Property</button>
+</form>
+
+
+|-----------------------------------------------------------------------------------------------------------|
+
+
+Flask Route (In your Flask route, you’ll handle the file upload.) :
+
+python:
+
+from flask import request, redirect, url_for, render_template
+from werkzeug.utils import secure_filename
+import os
+
+# Set up the path where photos will be stored
+UPLOAD_FOLDER = 'static/uploads/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route('/add_property', methods=['GET', 'POST'])
+def add_property():
+    if request.method == 'POST':
+        name = request.form['name']
+        address = request.form['address']
+        price = request.form['price']
+        description = request.form['description']
+
+        # Handle the photo upload
+        photo = request.files['photo']
+        if photo:
+            filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        else:
+            photo_path = None
+
+        # Save the property to the database
+        new_property = Property(name=name, address=address, price=price, description=description, photo=photo_path)
+        db.session.add(new_property)
+        db.session.commit()
+
+        return redirect(url_for('property_list'))
+
+    return render_template('add_property.html')
+
+|-----------------------------------------------------------------------------------------------------------|
+
+
+Step 2: Display the Photo
+Finally, update your template to display the photo if it exists.
+
+html:
+
+{% for property in properties %}
+    <div class="property">
+        <h2>{{ property.name }}</h2>
+        <p>{{ property.address }}</p>
+        <p>{{ property.price }}</p>
+        <p>{{ property.description }}</p>
+        {% if property.photo %}
+            <img src="{{ url_for('static', filename=property.photo) }}" alt="Property Photo">
+        {% endif %}
+    </div>
+{% endfor %}
+
+|-----------------------------------------------------------------------------------------------------------|
+
+
+Step 3: (Optional) Add Photo Validation
+You might want to add validation to ensure the file uploaded is indeed an image and within a certain size limit.
+
+python:
+
+from flask import flash
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/add_property', methods=['POST'])
+def add_property():
+    # Other code...
+    if 'photo' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    
+    photo = request.files['photo']
+
+    if photo and allowed_file(photo.filename):
+        # Save photo
+        filename = secure_filename(photo.filename)
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    else:
+        flash('Invalid file type')
+        return redirect(request.url)
+
+    # Save property to the database...
+
+|-----------------------------------------------------------------------------------------------------------|
+
+
+=> This approach will allow you to add a photo field to your Property table and handle photo uploads properly in your Flask application.

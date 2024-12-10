@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <style>
+        /* Flash Message Styles */
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 15px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            font-weight: 500;
+            animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 4s forwards;
+        }
+
+        .alert-danger {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border: 2px solid #d32f2f;
+        }
+
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #2e7d32;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Optional: Responsive adjustments */
+        @media (max-width: 480px) {
+            .alert {
+                width: 90%;
+                left: 5%;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+                <img src="/static/images/logo4.png" alt="Logo" />
+            </a>
+        </div>
+    </header>
+
+    <!-- Login Section -->
+    <section class="login-section">
+        <div class="login-container">
+            <h1>Log In</h1>
+            <form method="POST" action="{{ url_for('login') }}">
+                <div class="input-group">
+                    <label for="email">
+                        <img src="/static/images/email-icon.png" alt="Email Icon">
+                        <input type="email" name="email" id="email" placeholder="Email address">
+                    </label>
+                </div>
+                <div class="input-group">
+                    <label for="password">
+                        <img src="/static/images/password-icon.png" alt="Password Icon">
+                        <input type="password" name="password" id="password" placeholder="Password">
+                    </label>
+                </div>
+
+                <!-- Radio buttons for selecting Buyer or Seller -->
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="role" value="buyer" checked> Buyer
+                    </label>
+                    <label>
+                        <input type="radio" name="role" value="seller"> Seller
+                    </label>
+                </div>
+
+
+                <button type="submit" class="login-button">Login</button>
+            </form>
+            <p class="signup-text">Not have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+            <a style="text-decoration: none; color:#FF8C00; font-size: small; font-weight: bold;"
+                href="{{ url_for('admin_login') }}">Login As an Admin</a></p>
+        </div>
+    </section>
+
+    {% include 'footer.html' %}
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

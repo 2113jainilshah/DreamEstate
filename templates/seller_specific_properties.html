@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <style>
+        /* Specific CSS for this page */
+        .properties-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .property-card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background-color: #000;
+            border-radius: 20px;
+            margin: 20px 0;
+            padding: 20px;
+            width: 70%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .property-card img {
+            border-radius: 15px;
+            width: 400px;
+            height: 300px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .property-details {
+            color: white;
+            margin-left: 20px;
+        }
+
+        .property-details h2 {
+            margin: 0;
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        .property-details p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px; /* Adjust the gap between buttons */
+            margin-top: 10px;
+        }
+
+        .enquiry-button {
+            display: block;
+            width: 150px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #d47a0e;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .enquiry-button:hover {
+            background-color: #c56709;
+        }
+
+        footer {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1em;
+        }
+
+        .user-profile {
+            margin-left: 290px;
+        }
+
+
+        /* Add property button */
+        .filter-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 50px 0;
+        }
+
+        .add-prop-button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #d47a0e;
+            color: white;
+            border: none;
+            font-weight: bold;
+            font-size: x-large;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .filter-button:hover {
+            background-color: #c56709;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/logo4.png') }}" alt="Logo" />
+            </a>
+        </div>
+        <div class="user-profile">
+            <a href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='images/profile_photo.png') }}" alt="Profile Photo" class="profile-photo">
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="profile-name-link">
+                <span>{{ current_user.name }}</span>
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- List Property -->
+    <div class="filter-container">
+        <a href="{{ url_for('sell_property', id=current_user.id) }}" style="text-decoration: none;">
+            <button type="submit" class="add-prop-button">Add Property</button>
+        </a>
+    </div>
+
+
+    <!-- Properties Section -->
+    <section class="properties-container">
+        {% for property in properties %}
+        <div class="property-card">
+            <img src="/{{ property['photo'] }}" alt="House">
+            <div class="property-details">
+                <h2 style="padding-bottom: 30px;">{{ property['type'] }}</h2>
+                <p>Price : ${{ property['price'] }}</p>
+                <p>Rent : ${{ property['rent'] }}</p>
+                <p>Address : {{ property['address'] }}</p>
+                <p>Status : {{ property['status'] }}</p>
+                <p style="padding-top: 20px;">Seller : {{ property['seller_name'] }}</p>
+
+                <div class="button-group">
+                    {% if property.status!="Sold Out"  %}
+                    <a href="{{ url_for('soldout', property_id=property['id']) }}" class="enquiry-button">Sold Out</a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <!-- Footer -->
+    <!-- <footer>
+        <p>&copy; 2024 Dream Estate. All rights reserved.</p>
+    </footer> -->
+
+</body>
+
+</html>

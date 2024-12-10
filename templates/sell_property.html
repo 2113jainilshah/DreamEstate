@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Property</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .form-container {
+            background-color: #f5f5f5;
+            padding: 30px;
+            margin-top: 50px;
+            border-radius: 20px;
+            width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container input[type="file"],
+        .form-container select,
+        .form-container input[type="text"] {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0 10px 7px;
+            border: none;
+            border-radius: 10px;
+            background-color: #eeeeee;
+        }
+
+        .form-container select {
+            width: 96%;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #d47a0e;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-container button:hover {
+            background-color: #c56709;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .form-group label {
+            width: 30%;
+            margin-right: 10px;
+            text-align: right;
+        }
+
+        .form-group input[type="file"] {
+            width: 51%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background-color: #eeeeee;
+        }
+
+        footer {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1em;
+        }
+
+        .user-profile {
+            margin-left: 290px;
+        }
+
+        .flash-messages {
+            margin: 10px auto;
+            width: 80%;
+            text-align: center;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .alert-error {
+            background-color: #e74c3c;
+        }
+
+        .alert-success {
+            background-color: #2ecc71;
+        }
+
+        /* Flash Message Styles */
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 15px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            font-weight: 500;
+            animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 4s forwards;
+        }
+
+        .alert-danger {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border: 2px solid #d32f2f;
+        }
+
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #2e7d32;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Optional: Responsive adjustments */
+        @media (max-width: 480px) {
+            .alert {
+                width: 90%;
+                left: 5%;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/logo4.png') }}" alt="Logo" />
+            </a>
+        </div>
+        <div class="user-profile">
+            <a href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='images/profile_photo.png') }}" alt="Profile Photo"
+                    class="profile-photo">
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="profile-name-link">
+                <span>{{ current_user.name }}</span>
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+
+    <!-- Flash Messages -->
+    <!-- {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %} -->
+
+    <!-- Sell Property Form -->
+    <div class="container">
+        <div class="form-container">
+            <h2>List Property</h2>
+            <form id="propertyForm" action="/submit_property" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="property_images">Upload Photo:</label>
+                    <input type="file" id="property_images" name="property_images" accept="image/*" required>
+                </div>
+                <select name="property_type" required>
+                    <option value="" disabled selected>Property Type</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="House">House</option>
+                    <option value="Commercial">Commercial</option>
+                </select>
+                <input type="text" name="address" placeholder="Address" required>
+                <select name="city" required>
+                    <option value="" disabled selected>Select City</option>
+                    <option value="ahmedabad">Ahmedabad</option>
+                    <option value="surat">Surat</option>
+                    <option value="vadodara">Vadodara</option>
+                    <option value="rajkot">Rajkot</option>
+                    <option value="bhavnagar">Bhavnagar</option>
+                    <option value="jamnagar">Jamnagar</option>
+                    <option value="gandhinagar">Gandhinagar</option>
+                    <option value="junagadh">Junagadh</option>
+                    <option value="anand">Anand</option>
+                    <option value="morbi">Morbi</option>
+                    <option value="nadiad">Nadiad</option>
+                    <option value="bharuch">Bharuch</option>
+                    <option value="porbandar">Porbandar</option>
+                    <option value="navsari">Navsari</option>
+                    <option value="mehsana">Mehsana</option>
+                    <option value="surendranagar">Surendranagar</option>
+                    <option value="amreli">Amreli</option>
+                    <option value="palanpur">Palanpur</option>
+                    <option value="valsad">Valsad</option>
+                    <option value="vapi">Vapi</option>
+                    <option value="godhra">Godhra</option>
+                </select>
+
+
+                <input type="text" name="rent" placeholder="Rent">
+                <input type="text" name="price" placeholder="Price">
+
+                <!-- <button type="button" id="list-property-btn" class="btn btn-primary">List Property (Pay Listing
+                    Fee)</button> -->
+                <button type="button" onclick="submitProperty()">List Property</button>
+
+                <!-- Add Razorpay script here -->
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+                <script>
+                    function submitProperty() {
+                        const form = document.getElementById('propertyForm');
+                        const formData = new FormData(form);
+
+                        // Validate required fields
+                        const requiredFields = ['property_images', 'property_type', 'address', 'city', 'price', 'rent'];
+                        for (const field of requiredFields) {
+                            const value = formData.get(field);
+                            if (!value) {
+                                // Create a flash message via server
+                                fetch('/set_flash_message', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ message: `Please fill out the ${field.replace('_', ' ')} field.`, category: 'danger' })
+                                }).then(() => {
+                                    window.location.reload(); // Reload to show the message
+                                });
+                                return;
+                            }
+                        }
+
+                        // Proceed to create the order after validation
+                        fetch('/create_property_listing_order', {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.error) {
+                                    fetch('/set_flash_message', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ message: data.error, category: 'danger' })
+                                    }).then(() => {
+                                        window.location.reload(); // Reload to show the message
+                                    });
+                                    return;
+                                }
+
+                                // Configure Razorpay
+                                const options = {
+                                    key: data.key,
+                                    amount: data.amount,
+                                    currency: data.currency,
+                                    name: data.name,
+                                    description: data.description,
+                                    order_id: data.order_id,
+                                    prefill: data.prefill,
+                                    handler: function (response) {
+                                        const verificationData = new FormData();
+                                        verificationData.append('razorpay_payment_id', response.razorpay_payment_id);
+                                        verificationData.append('razorpay_order_id', response.razorpay_order_id);
+                                        verificationData.append('razorpay_signature', response.razorpay_signature);
+
+                                        fetch('/verify_payment', {
+                                            method: 'POST',
+                                            body: verificationData
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    fetch('/set_flash_message', {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({ message: 'Property listed successfully!', category: 'success' })
+                                                    }).then(() => {
+                                                        window.location.href = '/myproperties';
+                                                    });
+                                                } else {
+                                                    fetch('/set_flash_message', {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({ message: data.error || 'Failed to list property', category: 'danger' })
+                                                    }).then(() => {
+                                                        window.location.reload();
+                                                    });
+                                                }
+                                            });
+                                    }
+                                };
+
+                                const razorpay = new Razorpay(options);
+                                razorpay.open();
+                            });
+                    }
+
+                </script>
+
+                <!-- <script>
+                    function submitProperty() {
+                        const form = document.getElementById('propertyForm');
+                        const formData = new FormData(form);
+
+                        // Validate required fields
+                        const requiredFields = ['property_images', 'property_type', 'address', 'city', 'price', 'rent'];
+                        for (const field of requiredFields) {
+                            const value = formData.get(field);
+                            if (!value) {
+                                alert(`Please fill out the ${field.replace('_', ' ')} field.`);
+                                return;
+                            }
+                        }
+
+                        // Create the order after validation
+                        fetch('/create_property_listing_order', {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.error) {
+                                    alert(data.error);
+                                    return;
+                                }
+
+                                // Configure Razorpay
+                                const options = {
+                                    key: data.key,
+                                    amount: data.amount,
+                                    currency: data.currency,
+                                    name: data.name,
+                                    description: data.description,
+                                    order_id: data.order_id,
+                                    prefill: data.prefill,
+                                    handler: function (response) {
+                                        // After successful payment, verify the payment
+                                        const verificationData = new FormData();
+                                        verificationData.append('razorpay_payment_id', response.razorpay_payment_id);
+                                        verificationData.append('razorpay_order_id', response.razorpay_order_id);
+                                        verificationData.append('razorpay_signature', response.razorpay_signature);
+
+                                        fetch('/verify_payment', {
+                                            method: 'POST',
+                                            body: verificationData
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    alert('Property listed successfully!');
+                                                    window.location.href = '/myproperties';
+                                                } else {
+                                                    alert(data.error || 'Failed to list property');
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                                alert('An error occurred. Please try again.');
+                                            });
+                                    }
+                                };
+
+                                const razorpay = new Razorpay(options);
+                                razorpay.open();
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('An error occurred. Please try again.');
+                            });
+                    }
+
+                </script> -->
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Dream Estate. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

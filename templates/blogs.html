@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Blogs - Dream Estate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+
+        /* Blog Container */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background-color: rgb(0, 0, 0);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #000000;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: right;
+            font-size: 20px;
+            color: #ffffff;
+            margin-bottom: 30px;
+            text-decoration: underline;
+        }
+
+        .blog {
+            padding: 20px;
+        }
+
+        .blog-title {
+            font-size: 40px;
+            color: #e68a00;
+            margin-bottom: 20px;
+        }
+
+        .blog-content {
+            font-size: 18px;
+            color: #ffffff;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .blog-image {
+            display: block;
+            margin: 0 auto; /* Centers the image */
+            width: 80%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Like and Comment Section */
+        .interaction {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .interaction .like-comment {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .like-comment button {
+            background-color: #ff9800;
+            border: none;
+            padding: 10px 20px;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .like-comment button:hover {
+            background-color: #e68900;
+        }
+
+        .like-comment span {
+            font-size: 18px;
+        }
+
+        /* Write Your Blog Button */
+        .write-blog {
+            background-color: #ff9800;
+            border: none;
+            padding: 10px 20px;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .write-blog:hover {
+            background-color: #e68900;
+        }
+
+        .user-profile {
+            margin-left: 290px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/logo4.png') }}" alt="Logo" />
+            </a>
+        </div>
+        <div class="user-profile">
+            <a href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='images/profile_photo.png') }}" alt="Profile Photo"
+                    class="profile-photo">
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="profile-name-link">
+                <span>{{ current_user.name }}</span>
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>Daily Blogs</h1>
+
+    {% for blog in blogs %}
+    <div class="container">
+        <h2>{{ blog.date }}</h2>
+        <div class="blog">
+            <div class="blog-title">{{ blog.heading }}</div>
+            <div class="blog-content">{{ blog.content }}</div>
+
+            <img src="/{{ blog['photo'] }}" alt="House Image" class="blog-image">
+            
+            <div class="interaction">
+                <!-- <div class="like-comment">
+                    <button>👍 {{ blog.likes }}</button>
+                    <button>💬 Comment</button>
+                </div> -->
+                 <a href="{{ url_for('write_blog') }}">
+                     <button class="write-blog">Write Your Blog</button>
+                 </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enquiries</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        footer {
+            /* Stick the footer at bottom */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1em;
+        }
+
+        .user-profile {
+            justify-content: center;
+            margin: 30px 0 30px 0;
+        }
+
+        /* Enquiry Cards */
+        .enquiry-cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .enquiry-card {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            margin: 15px 0;
+            width: 80%;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .enquiry-card .info {
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+
+        .enquiry-card .approve-button {
+            background-color: #ff8800;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 150px;
+            transition: background-color 0.3s ease;
+        }
+
+        .enquiry-card .approve-button:hover {
+            background-color: #ff6600;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/logo4.png') }}" alt="Logo" />
+            </a>
+        </div>
+
+        <div style="margin-left: 730px;" class="user-profile">
+            <a href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='images/profile_photo.png') }}" alt="Profile Photo"
+                    class="profile-photo">
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="profile-name-link">
+                <span>{{ current_user.name }}</span>
+            </a>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% if role=="seller" %}
+                <li><a href="{{ url_for('myproperties') }}">My Properties</a></li>
+                <li><a href="{{ url_for('seller_enquires') }}">Inquiries</a></li>
+                {% endif %}
+                {% if role=="admin" %}
+                <li><a href="{{ url_for('admin') }}">Admin Panel</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <div class="enquiry-cards-container">
+        {% for enquiry in enquires %}
+        <div class="enquiry-card">
+            <div class="info">
+                <p><strong>Buyer Name:</strong> {{ enquiry.buyer_name }}</p>
+                <p><strong>Phone:</strong> {{ enquiry.buyer_phone }}</p>
+                <p><strong>Property Address:</strong> {{ enquiry.address }}</p>
+                <p><strong>Message:</strong> {{ enquiry.message }}</p>
+                <p><strong>Date:</strong> {{ enquiry.date }}</p>
+            </div>
+            <!-- <button class="approve-button">Approve</button> -->
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+
+</html>

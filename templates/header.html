@@ -1,0 +1,49 @@
+<header>
+    <div class="logo">
+        <a href="#home">
+            <img src="/static/images/logo4.png" alt="Logo" />
+        </a>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Service</a></li>
+            <li><a href="{{ url_for('blogs') }}">Blog</a></li>
+            <li><a href="{{ url_for('properties') }}">Property</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="auth-buttons">
+        {% if current_user.is_authenticated %}
+        <!-- User Profile -->
+        <div class="user-profile">
+            <a href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='images/profile_photo.png') }}" alt="Profile Photo"
+                    class="profile-photo">
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="profile-name-link">
+                <span>{{ current_user.name }}</span>
+            </a>
+            <!-- Show these for logged-in users -->
+            <a href="{{ url_for('logout') }}">
+                <button class="logout">Logout</button>
+            </a>
+        </div>
+        {% if current_user.role == 'admin' %}
+        <!-- Show this button if the user is an admin -->
+        <a href="{{ url_for('admin') }}">
+            <button class="admin">Admin</button>
+        </a>
+        {% endif %}
+        {% else %}
+        <!-- Show these for guests -->
+        <a href="{{ url_for('login') }}">
+            <button class="login">LogIn</button>
+        </a>
+        <a href="{{ url_for('signup') }}">
+            <button class="signup">SignUp</button>
+        </a>
+        {% endif %}
+    </div>
+</header>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <style>
+        /* Specific CSS for this page */
+        .properties-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .property-card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background-color: #000;
+            border-radius: 20px;
+            margin: 40px;
+            padding: 20px;
+            width: 35%;
+            height: 450px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .property-card img {
+            border-radius: 15px;
+            width: 360px;
+            height: 320px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .property-details {
+            color: white;
+            margin-left: 20px;
+        }
+
+        .property-details h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .property-details p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .enquiry-button {
+            display: block;
+            width: 150px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #d47a0e;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .enquiry-button:hover {
+            background-color: #c56709;
+        }
+
+        .user-profile {
+            margin-left: 290px;
+        }
+
+        /* Specific CSS for Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .pagination a,
+        .pagination span {
+            display: inline-block;
+            padding:
+                10px 15px;
+            margin: 4px;
+            text-decoration: none;
+            border-radius: 0px;
+            background-color: #f4f4f4;
+            color: #333;
+            border: 1px solid #ddd;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination a:hover {
+            background-color: #d47a0e;
+            color: white;
+        }
+
+        .pagination .active {
+            background-color: #d47a0e;
+            color: white;
+            border: 1px solid #d47a0e;
+            font-weight: bold;
+        }
+
+        .pagination .disabled {
+            color: #aaa;
+            pointer-events: none;
+            background-color: transparent;
+            border: none;
+        }
+
+        .pagination .ellipsis {
+            padding: 0 10px;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        /* Specific CSS for Search */
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0 30px 0;
+        }
+
+        .search-form input[type="text"] {
+            width: 400px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: large;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            height: 30px;
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #d47a0e;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-form button:hover {
+            background-color: #c56709;
+        }
+
+        /* Filter Form Styles */
+        .filter-form {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            width: 180px;
+            color: #333;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .filter-select:focus {
+            background-color: #fff;
+            border-color: #d47a0e;
+            outline: none;
+        }
+
+        .filter-button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #d47a0e;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .filter-button:hover {
+            background-color: #c56709;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            /* This centers the modal */
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            margin: auto;
+            margin-top: 340px;
+        }
+
+        .close-button {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .enquiry-submit-button {
+            background-color: #d47a0e;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/logo4.png') }}" alt="Logo" />
+            </a>
+        </div>
+        <div class="user-profile">
+            <a href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='images/profile_photo.png') }}" alt="Profile Photo"
+                    class="profile-photo">
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="profile-name-link">
+                <span>{{ current_user.name }}</span>
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Filter Properties -->
+    <form action="{{ url_for('properties') }}" method="GET" class="filter-form">
+        <div class="filter-container">
+            <select name="type" class="filter-select">
+                <option value="">Type</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Commercial">Commercial</option>
+                <option value="House">House</option>
+                <!-- Add more options as needed -->
+            </select>
+
+            <!-- <select name="price" class="filter-select">
+                <option value="">Price Range</option>
+                <option value="0-50000">Up to $50,000</option>
+                <option value="50001-100000">$50,001 - $100,000</option>
+                <option value="100001-200000">$100,001 - $200,000</option>
+            </select> -->
+
+            <!-- <select name="rent" class="filter-select">
+                <option value="">Rent Range</option>
+                <option value="0-1000">Up to $1,000</option>
+                <option value="1001-2000">$1,001 - $2,000</option>
+                <option value="2001-5000">$2,001 - $5,000</option>
+            </select> -->
+
+            <select name="city" class="filter-select">
+                <option value="">City</option>
+                <option value="ahmedabad">Ahmedabad</option>
+                <option value="surat">Surat</option>
+                <option value="vadodara">Vadodara</option>
+                <option value="rajkot">Rajkot</option>
+                <option value="bhavnagar">Bhavnagar</option>
+                <option value="jamnagar">Jamnagar</option>
+                <option value="gandhinagar">Gandhinagar</option>
+                <option value="junagadh">Junagadh</option>
+                <option value="anand">Anand</option>
+                <option value="morbi">Morbi</option>
+                <option value="nadiad">Nadiad</option>
+                <option value="bharuch">Bharuch</option>
+                <option value="porbandar">Porbandar</option>
+                <option value="navsari">Navsari</option>
+                <option value="mehsana">Mehsana</option>
+                <option value="surendranagar">Surendranagar</option>
+                <option value="amreli">Amreli</option>
+                <option value="palanpur">Palanpur</option>
+                <option value="valsad">Valsad</option>
+                <option value="vapi">Vapi</option>
+                <option value="godhra">Godhra</option>
+            </select>
+
+            <select name="sold_status" class="filter-select">
+                <option value="">Status</option>
+                <option value="not sold">Available</option>
+                <option value="Sold Out">Sold Out</option>
+            </select>
+
+            <button type="submit" class="filter-button">Apply Filters</button>
+        </div>
+    </form>
+
+    <!-- Properties Section -->
+    <section class="properties-container">
+        {% for property in properties %}
+        <div class="property-card">
+            <img src="/{{ property['photo'] }}" alt="House">
+            <div class="property-details">
+                <h2 style="padding-bottom: 30px;">{{ property['type'] }}</h2>
+                <p>Price : ${{ property['price'] }}</p>
+                <p>Rent : ${{ property['rent'] }}</p>
+                <p>Address : {{ property['address'] }}</p>
+                <p>Status : {{ property['status'] }}</p>
+                <p style="padding-top: 20px;">Seller : {{ property['seller_name'] }}</p>
+
+                {% if property.status != "Sold Out"%}
+                <a href="javascript:void(0);" class="enquiry-button" data-property-id="{{ property['id'] }}"
+                    onclick="openEnquiryModal(this)">
+                    Make An Inquiry
+                </a>
+                {% else %}
+                <h2 style="color: red; margin-top: 15px;">SOLD OUT</h2>
+                <h3 style="color: red; margin-top: 0px;">This property has been sold out, but you can check more
+                    properties like this....</h3>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Modal for each property -->
+        <div id="enquiryModal_{{ property['id'] }}" class="modal">
+            <div class="modal-content">
+                <span class="close-button" data-property-id="{{ property['id'] }}">&times;</span>
+                <h2>Make an Inquiry</h2>
+                <form action="{{ url_for('send_enquiry') }}" method="POST">
+                    <!-- Correct hidden fields to store dynamic property and seller information -->
+                    <input type="hidden" name="property_id" value="{{ property['id'] }}">
+                    <input type="hidden" name="seller_id" value="{{ property['seller_id'] }}">
+
+                    <!-- Existing message field -->
+                    <label for="userMessage">Message:</label>
+                    <textarea id="userMessage" name="user_message" rows="4" required></textarea>
+                    <button type="submit" class="enquiry-submit-button">Send Inquiry</button>
+                </form>
+            </div>
+        </div>
+
+        {% endfor %}
+    </section>
+
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item {% if page > 1 %}active{% endif %}">
+                <a class="page-link"
+                    href="{{ url_for('properties', page=page-1, type=request.args.get('type'), city=request.args.get('city'), sold_status=request.args.get('sold_status')) }}">Previous</a>
+            </li>
+
+            {% set half_window = 1 %}
+            {% set start_page = page - half_window %}
+            {% set end_page = page + half_window + 2 %}
+
+            {% if start_page < 1 %} {% set start_page=1 %} {% endif %} {% if end_page> total_pages %} {% set
+                end_page =
+                total_pages %} {% endif %}
+
+                {% for i in range(start_page, end_page + 1) %}
+                <li class="page-item {% if page == i %}active{% endif %}">
+                    <a class="page-link"
+                        href="{{ url_for('properties', page=i, type=request.args.get('type'), city=request.args.get('city'), sold_status=request.args.get('sold_status')) }}">{{
+                        i }}</a>
+                </li>
+                {% endfor %}
+
+                {% if end_page < total_pages %} <li class="page-item disabled">
+                    <span class="ellipsis">...</span>
+                    </li>
+                    {% endif %}
+
+                    {% if page < total_pages %} <li class="page-item {% if page < total_pages %}active{% endif %}">
+                        <a class="page-link"
+                            href="{{ url_for('properties', page=page+1, type=request.args.get('type'), city=request.args.get('city'), sold_status=request.args.get('sold_status')) }}">Next</a>
+                        </li>
+                        {% endif %}
+        </ul>
+    </nav>
+
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Dream Estate. All rights reserved.</p>
+    </footer>
+
+    <script>
+
+        // Function to open the modal and populate it with property data
+        function openEnquiryModal(propertyType, sellerEmail) {
+            document.getElementById('propertyType').value = propertyType;
+            document.getElementById('sellerEmail').value = sellerEmail;
+            document.getElementById('enquiryModal').style.display = 'flex';
+        }
+
+        // Close the modal when the close button is clicked
+        document.querySelector('.close-button').onclick = function () {
+            document.getElementById('enquiryModal').style.display = 'none';
+        };
+
+        // Close the modal when clicking outside the modal content
+        window.onclick = function (event) {
+            if (event.target == document.getElementById('enquiryModal')) {
+                document.getElementById('enquiryModal').style.display = 'none';
+            }
+        };
+
+
+        // Function to open the modal when the "Make an Enquiry" button is clicked
+        function openEnquiryModal(button) {
+            var propertyId = button.getAttribute("data-property-id");
+            var modal = document.getElementById("enquiryModal_" + propertyId);
+            modal.style.display = "block"; // Show the modal
+        }
+
+        // Function to close the modal
+        function closeEnquiryModal(propertyId) {
+            var modal = document.getElementById("enquiryModal_" + propertyId);
+            if (modal) {
+                modal.style.display = "none"; // Hide the modal
+            }
+        }
+
+        // Event listener for closing the modal
+        document.querySelectorAll('.close-button').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var propertyId = this.getAttribute('data-property-id'); // Get property ID from data attribute
+                closeEnquiryModal(propertyId); // Close the modal
+            });
+        });
+
+        // Event listener for closing the modal
+        document.querySelectorAll('.close-button').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var propertyId = this.getAttribute('data-property-id'); // Get property ID from data attribute
+                closeEnquiryModal(propertyId); // Call the close function with the property ID
+            });
+        });
+
+    </script>
+
+
+</body>
+
+</html>
+
+
+
+
+<!-- <nav aria-label="Page navigation">
+    <ul class="pagination">
+        {% if page > 1 %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('properties', page=page-1) }}">Previous</a>
+        </li>
+        {% endif %}
+
+        {% for i in range(1, total_pages+1) %}
+        <li class="page-item {% if page == i %}current{% endif %}">
+            <a class="page-link" href="{{ url_for('properties', page=i) }}">{{ i }}</a>
+        </li>
+        {% endfor %}
+
+        {% if page < total_pages %} <li class="page-item">
+            <a class="page-link" href="{{ url_for('properties', page=page+1) }}">Next</a>
+            </li>
+            {% endif %}
+    </ul>
+</nav> -->

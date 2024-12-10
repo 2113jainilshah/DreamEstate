@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Estate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <!-- Header -->
+    {% include 'header.html' %}
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Home is Where the Dream Begins</h1>
+            <p>Encourages clients to explore a wide range of properties, empowering them to discover a home that not
+                only meets their practical needs but also aligns with their personal desires, tastes, and lifestyle.</p>
+            <a
+                href="mailto:dreamestate1212@gmail.com?subject=Inquiry%20about%20Porperty&body=My%20name%3A%20%3Cyour%20name%20here%3E%0D%0AMy%20questions%3A%20%3Center%20question%20here%3E">
+                <button class="cta-button">Make An Inquiry</button>
+            </a>
+        </div>
+        <div class="hero-image">
+            <img src="/static/images/Home1.jpg" alt="House Image">
+        </div>
+    </section>
+
+    <!-- Marketplace Section -->
+    <section id="about" class="marketplace">
+        <div class="marketplace-image">
+            <img src="/static/images/Home2.jpg" alt="House Image">
+        </div>
+        <h2>The Ultimate Marketplace for Rental Homes</h2>
+        <p>With a team of over 30,000 professionals across 70+ countries, we offer unparalleled global coverage and
+            service excellence.</p>
+        <!-- <ul>
+            <li>Modern Living Spaces</li>
+            <li>Breathtaking Views</li>
+            <li>Exceptional Lifestyle</li>
+            <li>Innovative Home Solutions</li>
+        </ul> -->
+        <a href="#services">
+            <button class="services-button">Our Services</button>
+        </a>
+    </section>
+
+
+    <!-- Services Section -->
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <h2>Our Services</h2>
+        <div class="service-cards">
+            {% if role == "buyer" %}
+            <div class="card">
+                <img src="/static/images/buy.png" alt="Buy a home">
+                <h3>Buy Property</h3>
+                <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                    to call home.</p>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('properties') }}" class="card-link">Buy Property &rarr;</a>
+                {% else %}
+                <h4 style="color: #FF8C00;">Please login for more....</h4>
+                {% endif %}
+            </div>
+            <div class="card">
+                <img src="/static/images/rent.png" alt="Rent a home">
+                <h3>Rent Property</h3>
+                <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                    to call home.</p>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('properties') }}" class="card-link">Rent Property &rarr;</a>
+                {% else %}
+                <h4 style="color: #FF8C00;">Please login for more....</h4>
+                {% endif %}
+            </div>
+            <div class="card">
+                <img src="/static/images/consultation.png" alt="Real estate consultation">
+                <h3>Consultation</h3>
+                <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                    to call home.</p>
+                {% if current_user.is_authenticated %}
+                <a href="mailto:dreamestate1212@gmail.com?subject=Consultation%20For%20Current%20Porperty%20Trends&body=My%20name%3A%20%3Cyour%20name%20here%3E%0D%0AMy%20questions%3A%20%3Center%20question%20here%3E" class="card-link">Consultation &rarr;</a>
+                {% else %}
+                <h4 style="color: #FF8C00;">Please login for more....</h4>
+                {% endif %}
+            </div>
+            {% elif role == "seller" %}
+            <div class="card">
+                <img src="/static/images/sell.png" alt="Sell a home">
+                <h3>Sell a Property</h3>
+                <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                    to call home.</p>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('sell_property') }}" class="card-link">Sell a Property &rarr;</a>
+                {% else %}
+                <h4 style="color: #FF8C00;">Please login for more....</h4>
+                {% endif %}
+            </div>
+            <div class="card">
+                <img src="/static/images/consultation.png" alt="Real estate consultation">
+                <h3>Consultation</h3>
+                <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                    to call home.</p>
+                {% if current_user.is_authenticated %}
+                <a href="mailto:dreamestate1212@gmail.com?subject=Consultation%20For%20Current%20Porperty%20Trends&body=My%20name%3A%20%3Cyour%20name%20here%3E%0D%0AMy%20questions%3A%20%3Center%20question%20here%3E" class="card-link">Consultation &rarr;</a>
+                {% else %}
+                <h4 style="color: #FF8C00;">Please login for more....</h4>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="card">
+                <img src="/static/images/buy.png" alt="Buy a home">
+                <h3>Buy Property</h3>
+                <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                    to call home.</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" class="card-link">Find a Home &rarr;</a>
+                {% else %}
+                <h4 style="color: #FF8C00;">Please login for more....</h4>
+                {% endif %}
+            </div>
+            <div class="card">
+                <img src="/static/images/sell.png" alt="Sell a home">
+                <h3>Sell Property</h3>
+                <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                    to call home.</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" class="card-link">Sell a Property &rarr;</a>
+                {% else %}
+                <h4 style="color: #FF8C00;">Please login for more....</h4>
+                {% endif %}
+            </div>
+            <div class="card">
+                <img src="/static/images/rent.png" alt="Rent a home">
+                <h3>Rent Property</h3>
+                <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                    to call home.</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" class="card-link">Find a Home &rarr;</a>
+                {% else %}
+                <h4 style="color: #FF8C00;">Please login for more....</h4>
+                {% endif %}
+            </div>
+            <div class="card">
+                <img src="/static/images/consultation.png" alt="Real estate consultation">
+                <h3>Consultation</h3>
+                <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                    to call home.</p>
+                {% if current_user.is_authenticated %}
+                <a href="mailto:dreamestate1212@gmail.com?subject=Consultation%20For%20Current%20Porperty%20Trends&body=My%20name%3A%20%3Cyour%20name%20here%3E%0D%0AMy%20questions%3A%20%3Center%20question%20here%3E" class="card-link">Consultation &rarr;</a>
+                {% else %}
+                <h4 style="color: #FF8C00;">Please login for more....</h4>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+
+    {% include 'footer.html' %}
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
+
+
+
+<!-- ------------------------------------------------------------- BackUp ------------------------------------------------------ -->
+<!-- Services Section -->
+<!-- <section id="services" class="services">
+            <h2>Our Services</h2>
+            <div class="service-cards">
+                <div class="card">
+                    <img src="/static/images/buy.png" alt="Buy a home">
+                    <h3>Buy a home</h3>
+                    <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                        to call home.</p>
+                    <a href="#" type="button" class="card-link">Find a Home &rarr;
+                    </a>
+                </div>
+                <div class="card">
+                    <img src="/static/images/sell.png" alt="Sell a home">
+                    <h3>Sell a home</h3>
+                    <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                        to call home.</p>
+                    <a href="#" type="button" class="card-link">Sell a Home &rarr;
+                    </a>
+                </div>
+                <div class="card">
+                    <img src="/static/images/rent.png" alt="Rent a home">
+                    <h3>Rent a home</h3>
+                    <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                        to call home.</p>
+                    <a href="#" type="button" class="card-link">Find a Home &rarr;
+                    </a>
+                </div>
+                <div class="card">
+                    <img src="/static/images/consultation.png" alt="Real estate consultation">
+                    <h3>Consultation</h3>
+                    <p>Over 1 million+ homes for sale available on the website, we can match you with a house you will want
+                        to call home.</p>
+                    <a href="#" type="button" class="card-link">Consultation &rarr;
+                    </a>
+                </div>
+            </div>
+        </section> -->

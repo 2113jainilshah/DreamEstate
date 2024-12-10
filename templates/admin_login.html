@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+                <img src="/static/images/logo4.png" alt="Logo" />
+            </a>
+        </div>
+    </header>
+
+    <!-- Login Section -->
+    <section class="login-section">
+        <div class="login-container">
+            <h1>Log In</h1>
+            <form method="POST" action="{{ url_for('admin_login') }}">
+                <div class="input-group">
+                    <label for="email">
+                        <img src="/static/images/email-icon.png" alt="Email Icon">
+                        <input type="email" name="email" id="email" placeholder="Email address">
+                    </label>
+                </div>
+                <div class="input-group">
+                    <label for="password">
+                        <img src="/static/images/password-icon.png" alt="Password Icon">
+                        <input type="password" name="password" id="password" placeholder="Password">
+                    </label>
+                </div>
+                <input type="hidden" name="role" id="role" value="admin">
+                <button type="submit" class="login-button">Login</button>
+            </form>
+            <p class="signup-text">Not have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+            <a style="text-decoration: none; color:#FF8C00; font-size: small; font-weight: bold;" href="{{ url_for('login') }}">Login As a User</a></p>
+        </div>
+    </section>
+
+    {% include 'footer.html' %}
+
+</body>
+
+</html>
